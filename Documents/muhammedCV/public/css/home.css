@@ -1,0 +1,299 @@
+/* page base */
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    background: #1f2937; /* matches walker BG to avoid flashes */
+  }
+  /*  */
+  /* fullscreen canvas behind everything */
+  #walkerCanvas {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;          /* behind future content */
+    /* background: #1f2937;  same as script BACKGROUND_COLOR */
+    pointer-events: none; /* canvas shouldn't block clicks later */
+  }
+  
+  /* optional: a centered “nothing here yet” label to check layers */
+  
+  .placeholder {
+    position: relative;
+    z-index: 1;
+    color: #e5e7eb;
+    font-size: 1.25rem;
+    display: grid;
+    place-items: center;
+    height: 100dvh;
+    opacity: .6;
+  }
+ 
+
+
+  /* Make wrapper fill screen and center everything */
+#spotlight-wrapper {
+  min-height: 100vh;           /* full page height */
+  display: flex;               /* use flexbox */
+  justify-content: center;     /* horizontal center */
+  align-items: center;         /* vertical center */
+
+    /* Example with semi-transparent background */
+    /* background-color: rgba(255, 255, 255, 0.5); white, 50% opacity */
+    
+}
+  
+  /* Respect reduced-motion preferences (soften the trail) */
+  @media (prefers-reduced-motion: reduce) {
+    :root { --walker-fade-amount: 0.08; }
+  }
+
+  /* ---------- Spotlight Wall ---------- */
+
+:root{
+    --bg: #0b1d3a;        
+    /* --ring: #2ec4ff33;    
+     --ring-strong: #2ec4ff99; */
+   }
+   
+  /* .spotlight-wall{
+    position: relative;
+    height: clamp(420px, 60vh, 640px);
+    display: grid;
+    place-items: start center;
+    background: var(--bg);
+    background: transparent;
+    overflow: hidden;
+  } */
+
+
+  /* Center the entire section in the viewport */
+.spotlight-wall{
+  /* controling the width: to cover the full view width  ; */
+  /* width:100vw; */
+
+  /* background-color:#1f2937 ; */
+  padding: 70px 0;
+  position: relative;
+  /* min-height: 60vh;         take full viewport height */
+  height: auto;
+  display: grid;
+  place-items: center;         /* center both axes */
+  place-content: center;       /* helps if content is shorter */
+  padding-block: clamp(32px, 8vh, 120px);
+  /* background:var(--bg); */
+       /* keep the walker visible; use var(--bg) if you want a solid bg */
+  overflow:hidden;
+}
+  
+  /* moving spotlight overlay */
+  .spotlight-wall::before{
+    content:"";
+    position: absolute; inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(200px 200px at var(--x,50%) var(--y,50%),
+        #ffffff1a 0%, #ffffff08 40%, transparent 60%),
+      radial-gradient(420px 420px at var(--x,50%) var(--y,50%),
+        var(--ring-strong) 0%, transparent 60%);
+    mix-blend-mode: overlay;
+    transition: background-position .08s linear;
+  }
+  
+  /* cards grid with perspective */
+  .cards{
+    --gap: clamp(24px, 4vmin, 40px);
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(180px, 1fr));
+    gap: clamp(100px, 4vw, 48px); /* grows with viewport, capped */
+    transform-style: preserve-3d;
+    perspective: 1200px;
+    padding-inline: clamp(16px, 5vw, 64px);
+    filter: drop-shadow(0 10px 30px #0006);
+    width: min(1200px, 92vw);   /* shrink-to-fit and center */
+  }
+  
+  /* card look */
+  .card{
+    aspect-ratio: 3/4;
+    border-radius: 14px;
+    overflow: hidden;
+    transform: rotateY(var(--ry,0deg)) rotateX(var(--rx,0deg)) translateZ(var(--tz,0px));
+    transition: transform .15s ease, filter .2s ease, opacity .2s ease;
+    /* filter: grayscale(1) contrast(.9) brightness(.95) blur(.2px); */
+
+    filter: none;
+    /* opacity: 1; */
+    opacity: 1;
+    background: #111a;
+    border: 2px solid #ffffff12;
+  }
+  .card img{
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  
+  /* hover focus emphasis */
+  /* the code below make it go daker while not hovering  */
+  /* .cards:hover .card{ opacity: .5; filter: grayscale(1) blur(.6px) brightness(.8); } */
+  .cards .card:hover{
+    opacity: 1;
+    filter: none;
+    transform: rotateY(var(--ry,0deg)) rotateX(var(--rx,0deg)) translateZ(30px) scale(1.02);
+    border-color: var(--ring);
+    box-shadow: 0 8px 30px #0009, 0 0 0 4px #ffffff0a inset;
+  }
+  
+  /* small screens: fewer columns */
+  @media (max-width: 900px){
+    .cards{ grid-template-columns: repeat(3, minmax(140px, 1fr)); }
+  }
+  @media (max-width: 520px){
+    .cards{ grid-template-columns: repeat(2, minmax(130px, 1fr)); }
+  }
+
+
+/* title glow */
+.title{
+  color:#eaf4ff;
+  font-weight:800;
+  letter-spacing:.5px;
+
+
+  /* soft outer glow */
+  text-shadow:
+    0 1px 0 rgba(255,255,255,.2),
+    0 0 10px rgba(46,196,255,.45),
+    0 0 24px rgba(46,196,255,.35),
+    0 0 48px rgba(46,196,255,.2);
+}
+
+/* optional subtle halo under the text */
+.title::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:-8px;
+  width:60%;
+  height:8px;
+  background:radial-gradient(50% 8px at 50% 50%, rgba(46,196,255,.5), transparent 70%);
+  filter:blur(6px);
+  pointer-events:none;
+}
+
+
+
+
+/* ---------- Responsive grid map ----------
+XL ≥1600px: roomy 4-up
+L  ≥1400px: comfy 4-up
+Desktop 1200–1399px: tight 4-up
+Sm Desktop / Lg Tablet 1024–1199px: 3–4 up (auto)
+Tablet 900–1023px: solid 3-up
+Tablet 600–899px: 2–3 up (auto)
+Lg Phone 430–599px: 2-up
+Phone ≤429px: 1-up
+Short landscape phones: shorter cards
+----------------------------------------- */
+
+/* Make cards auto-fit; columns are driven by --card-min */
+.cards{
+  --card-min: 280px;                        /* base minimum column width */
+  --gap: clamp(20px, 3vw, 40px);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--card-min), 1fr));
+  gap: var(--gap);
+  width: min(1280px, 94vw);                 /* cap and center */
+  margin-inline: auto;
+}
+
+/* Let each card fill its grid track */
+.e-card{ width: 100%; max-width: 100%; height: 340px; }
+
+/* Title scales nicely */
+.title{ font-size: clamp(22px, 2.4vw, 36px); }
+
+/* XL desktops */
+@media (min-width:1600px){
+  .cards{ --card-min: 320px; --gap: 44px; width: min(1400px, 92vw); }
+}
+
+/* Large desktops */
+@media (min-width:1400px) and (max-width:1599px){
+  .cards{ --card-min: 300px; --gap: 40px; width: min(1360px, 92vw); }
+}
+
+/* Desktops 1200–1399 */
+@media (min-width:1200px) and (max-width:1399px){
+  .cards{ --card-min: 280px; }
+}
+
+/* Small desktop / big tablet 1024–1199 */
+@media (min-width:1024px) and (max-width:1199px){
+  .cards{ --card-min: 260px; }
+}
+
+/* Tablets 900–1023 (clean 3-up) */
+@media (min-width:900px) and (max-width:1023px){
+  .cards{ --card-min: 260px; --gap: 32px; }
+}
+
+/* Tablets 600–899 (2–3 up, tighter gap) */
+@media (min-width:600px) and (max-width:899px){
+  .cards{ --card-min: 240px; --gap: 28px; }
+  .e-card{ height: 330px; }
+}
+
+/* Large phones 430–599 (2-up) */
+@media (min-width:430px) and (max-width:599px){
+  .cards{ --card-min: 200px; --gap: 22px; width: 94vw; }
+  .e-card{ height: 320px; }
+  .spotlight-wall{ padding-block: clamp(24px, 7vh, 72px); }
+}
+
+/* Phones ≤429 (1-up) */
+@media (max-width:429px){
+  .cards{ --card-min: 100%; --gap: 18px; width: 92vw; }
+  .e-card{ height: 300px; }
+  .title{ font-size: clamp(20px, 6vw, 28px); }
+  .spotlight-wall{ padding-block: clamp(20px, 8vh, 64px); }
+}
+
+/* Very short landscape phones (keep everything visible) */
+@media (max-height: 420px) and (orientation: landscape){
+  .cards{ --gap: 16px; }
+  .e-card{ height: 260px; }
+}
+
+
+/* Bigger title only for the Skills section */
+#portfolio .title{
+  font-size: clamp(42px, 3vw, 70px);
+  line-height: 1.05;
+}
+
+
+
+/* phones & small tablets: don't vertically center the whole section */
+@media (max-width: 599px){
+  #spotlight-wrapper{
+    min-height: auto;        /* was 100vh */
+    align-items: flex-start; /* was center */
+  }
+  .spotlight-wall{
+    place-items: start center;                 /* title + grid start from the top */
+    padding-block: clamp(48px, 10vh, 96px);    /* comfy top/bottom spacing */
+  }
+  .cards{
+    justify-items: center;   /* grid items centered in their column */
+  }
+}
+
+
+
+
+
+
+   

@@ -1,0 +1,162 @@
+:root{
+    --bg: #0b1d3a;
+    --card: #102447;
+    --accent: #2ec4ff;
+    --text: #e6f1ff;
+    --muted: #b9c8e6;
+  }
+  
+  .butterfly-cards{
+    padding: clamp(32px, 6vw, 72px) 16px;
+    background: var(--bg);
+    color: var(--text);
+  }
+  
+  .section-title{
+    text-align:center;
+    margin: 0 0 28px;
+    font-size: clamp(1.25rem, 1rem + 1.5vw, 2rem);
+    letter-spacing: .2px;
+  }
+  
+  .cards{
+    --size: clamp(220px, 36vw, 380px);  /* circle diameter */
+    --thumb: clamp(72px, 9vw, 110px);   /* logo size */
+    --ring: calc(var(--size) / 2);
+  
+    position: relative;
+    width: min(1100px, 92%);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(20px, 4vw, 56px);
+    align-items: center;
+  }
+  
+  @media (max-width: 900px){
+    .cards{ grid-template-columns: 1fr; justify-items: center; }
+  }
+  
+  /* radios hidden */
+  .cards > input{ position:absolute; opacity:0; pointer-events:none; }
+  
+  /* circle with 3 thumbs */
+  .circle-container{
+    position: relative;
+    width: var(--size);
+    height: var(--size);
+    border-radius: 50%;
+    margin-inline: auto;
+    filter: drop-shadow(0 18px 40px rgba(0,0,0,.35));
+  }
+  
+  .circle-container .thumb{
+    --angle: 0deg;
+    position: absolute;
+    top: 50%; left: 50%;
+    width: var(--thumb); height: var(--thumb);
+    transform:
+      rotate(var(--angle))
+      translate(calc(var(--ring) - var(--thumb)/2))
+      rotate(calc(-1 * var(--angle)));
+    transition: transform .3s ease, filter .3s ease, opacity .3s ease;
+    border-radius: 50%;
+    display: grid; place-items: center;
+    background: linear-gradient(180deg, #152e58, #0f2448);
+    border: 1px solid rgba(255,255,255,.08);
+    box-shadow: 0 8px 24px rgba(0,0,0,.35), inset 0 0 0 2px rgba(255,255,255,.04);
+    overflow: hidden;
+    opacity: .75;
+  }
+  
+  .circle-container .thumb img{
+    max-width: 70%;
+    max-height: 70%;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,.4));
+  }
+  
+  /* three positions around the circle (top, bottom-left, bottom-right) */
+  .circle-container .thumb:nth-child(1){ --angle: -90deg; }
+  .circle-container .thumb:nth-child(2){ --angle: 30deg; }
+  .circle-container .thumb:nth-child(3){ --angle: 210deg; }
+  
+  /* panels (right side) */
+  .contents{
+    position: relative;
+    min-height: 260px;
+  }
+  
+  .panel{
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 16px;
+    padding: clamp(16px, 3vw, 24px);
+    box-shadow: 0 10px 30px rgba(0,0,0,.3);
+    opacity: 0;
+    transform: translateY(12px) scale(.98);
+    transition: opacity .3s ease, transform .3s ease, border-color .3s ease;
+  }
+  
+  .panel h3{
+    margin: 0 0 10px;
+    font-size: clamp(1.05rem, .9rem + .8vw, 1.4rem);
+  }
+  
+  .panel ul{
+    margin: 0 0 14px; padding: 0 0 0 18px;
+  }
+  
+  .panel li{ margin: 6px 0; color: var(--muted); }
+  .panel li span{ color: var(--text); font-weight: 600; }
+  
+  /* prev/next buttons (CSS-only via labels) */
+  .buttons{
+    display: flex; gap: 12px;
+    margin-top: 8px;
+  }
+  .buttons label{
+    width: 38px; height: 38px; display: grid; place-items: center;
+    border-radius: 10px; cursor: pointer; user-select: none;
+    color: var(--text);
+    background: #14315f;
+    border: 1px solid rgba(255,255,255,.12);
+    transition: transform .15s ease, background .2s ease, box-shadow .2s ease;
+  }
+  .buttons label:hover{
+    transform: translateY(-1px);
+    background: #184070;
+    box-shadow: 0 8px 20px rgba(46,196,255,.18);
+  }
+  
+  /* ACTIVE STATE MAPPING (radios -> panel + highlight thumb) */
+  #award-1:checked ~ .contents .panel:nth-child(1),
+  #award-2:checked ~ .contents .panel:nth-child(2),
+  #award-3:checked ~ .contents .panel:nth-child(3){
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    border-color: rgba(46,196,255,.35);
+  }
+  
+  /* make the active thumb pop a bit */
+  #award-1:checked ~ .circle-container .thumb:nth-child(1),
+  #award-2:checked ~ .circle-container .thumb:nth-child(2),
+  #award-3:checked ~ .circle-container .thumb:nth-child(3){
+    opacity: 1;
+    box-shadow:
+      0 14px 40px rgba(46,196,255,.25),
+      inset 0 0 0 2px rgba(46,196,255,.35);
+    transform:
+      rotate(var(--angle))
+      translate(calc(var(--ring) - var(--thumb)/2 - 6px))
+      rotate(calc(-1 * var(--angle)))
+      scale(1.06);
+  }
+  
+  /* mobile: stack circle above panels and shrink */
+  @media (max-width: 900px){
+    .contents{ width: min(620px, 100%); min-height: 240px; }
+  }
+  

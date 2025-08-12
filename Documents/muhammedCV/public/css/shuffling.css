@@ -1,0 +1,280 @@
+/* ===============================
+   SHUFFLE (scoped)
+   - Wrap your markup with: <section class="shuffle-block"> ... </section>
+   - Inside use: <div class="shuffle-cards"> + <article class="shuffle-card">
+   - No global selectors; safe with the rest of your site.
+   =============================== */
+
+/* --- Wrapper controls section spacing + optional separators --- */
+.shuffle-block{
+    /* Tight vertical rhythm so it hugs neighbor sections */
+    margin-block: clamp(8px, 2vh, 20px);
+  
+    /* Optional subtle divider (pick one, or remove both) */
+    /* border-top: 1px solid rgba(255,255,255,.08); */
+    /* box-shadow: 0 -1px 0 rgba(255,255,255,.06) inset; */
+  
+    /* Keep everything centered within your site’s content width */
+    display: block;
+  }
+  
+  /* Content max width (align with your other sections) */
+  .shuffle-block .shuffle-cards{
+    width: min(1200px, 92vw);
+    margin-inline: auto;
+  
+    position: relative;
+    display: grid;
+    /* Stack layout: all cards sit on top of each other like a deck */
+    place-items: center;
+    padding: clamp(8px, 2vh, 20px);
+    filter: drop-shadow(0 10px 30px #0006);
+    /* Prevent accidental overflow */
+    overflow: visible;
+  }
+  
+  /* Hide the radios only within this block */
+  .shuffle-block input[type="radio"]{
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  
+  /* ---------- Card base ---------- */
+  .shuffle-block .shuffle-card{
+    /* Deck size */
+    width: min(360px, 86vw);
+    aspect-ratio: 3 / 4;
+  
+    border-radius: 14px;
+    overflow: hidden;
+  
+    /* Subtle glassy look that matches your theme */
+    background: #111a;
+    border: 2px solid #ffffff14;
+    backdrop-filter: saturate(1.2) blur(2px);
+  
+    /* Slight rotation per-card via inline --angle */
+    transform: translateY(0) rotate(var(--angle, 0deg));
+    transition: transform .18s ease, box-shadow .2s ease, border-color .2s ease, filter .2s ease, opacity .2s ease;
+  
+    /* Stack all cards in the same spot (deck) */
+    position: absolute;
+    inset: 0;
+    margin: auto;
+  
+    /* Default stacking */
+    z-index: 1;
+    opacity: 0.98;
+  }
+  
+  /* Card image fills */
+  .shuffle-block .shuffle-card-img{
+    width: 60%;
+    height: 58%;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;    /* center horizontally */
+  }
+  
+  /* Card content area */
+  .shuffle-block .shuffle-card .shuffle-card-data{
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+    gap: 10px;
+    padding: 14px 16px 16px;
+    color: #e5e7eb;
+  }
+  
+  /* Small number badge */
+  .shuffle-block .shuffle-card .shuffle-card-data .card-num{
+    font-size: 12px;
+    letter-spacing: .3px;
+    opacity: .7;
+  }
+  
+  /* Title */
+  .shuffle-block .shuffle-card h2{
+    margin: 0;
+    font-size: clamp(18px, 2.2vw, 22px);
+    line-height: 1.2;
+    color: #fafcff;
+    text-shadow:
+      0 1px 0 rgba(255,255,255,.08),
+      0 0 10px rgba(46,196,255,.25);
+  }
+  
+  /* Body text */
+  .shuffle-block .shuffle-card p{
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.45;
+    color: #d6dee7;
+    opacity: .9;
+  }
+  
+  /* Footer with prev/next labels */
+  .shuffle-block .shuffle-card footer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid #ffffff12;
+  }
+  
+  /* Prev/Next control labels */
+  .shuffle-block .shuffle-card footer label{
+    cursor: pointer;
+    user-select: none;
+    font-size: 18px;
+    line-height: 1;
+    padding: 6px 10px;
+    border-radius: 10px;
+    transition: transform .12s ease, background-color .12s ease;
+    background: #ffffff10;
+    border: 1px solid #ffffff14;
+  }
+  
+  .shuffle-block .shuffle-card footer label:hover{
+    transform: translateY(-1px);
+    background: #ffffff14;
+  }
+  
+  /* ---------- Active card logic (radio-driven) ----------
+     Structure in your EJS is: <input id="radio-1"> + <article> ... repeating
+     We use the adjacent sibling (+) to target the matching card.
+     Extend the pattern if you add more cards.
+  ------------------------------------------------------- */
+  
+  /* Base z stacking: later cards appear slightly above by default */
+  .shuffle-block .shuffle-card:nth-of-type(1){ z-index: 2; }
+  .shuffle-block .shuffle-card:nth-of-type(2){ z-index: 3; }
+  .shuffle-block .shuffle-card:nth-of-type(3){ z-index: 4; }
+  .shuffle-block .shuffle-card:nth-of-type(4){ z-index: 5; }
+  
+  /* Checked radio elevates and un-tilts its paired card */
+  .shuffle-block #radio-1:checked + .shuffle-card{
+    z-index: 10;
+    transform: translateY(-8px) rotate(0deg);
+    border-color: #2ec4ff66;
+    box-shadow: 0 12px 36px rgba(0,0,0,.55), 0 0 0 4px #ffffff0a inset;
+  }
+  .shuffle-block #radio-2:checked + .shuffle-card{
+    z-index: 10;
+    transform: translateY(-8px) rotate(0deg);
+    border-color: #2ec4ff66;
+    box-shadow: 0 12px 36px rgba(0,0,0,.55), 0 0 0 4px #ffffff0a inset;
+  }
+  .shuffle-block #radio-3:checked + .shuffle-card{
+    z-index: 10;
+    transform: translateY(-8px) rotate(0deg);
+    border-color: #2ec4ff66;
+    box-shadow: 0 12px 36px rgba(0,0,0,.55), 0 0 0 4px #ffffff0a inset;
+  }
+  .shuffle-block #radio-4:checked + .shuffle-card{
+    z-index: 10;
+    transform: translateY(-8px) rotate(0deg);
+    border-color: #2ec4ff66;
+    box-shadow: 0 12px 36px rgba(0,0,0,.55), 0 0 0 4px #ffffff0a inset;
+  }
+  
+  /* Optionally dim non-active cards a touch when hovering the deck */
+  @media (hover:hover){
+    .shuffle-block .shuffle-cards:hover .shuffle-card{
+      opacity: .9;
+      filter: grayscale(.05) brightness(.98);
+    }
+    .shuffle-block #radio-1:checked + .shuffle-card,
+    .shuffle-block #radio-2:checked + .shuffle-card,
+    .shuffle-block #radio-3:checked + .shuffle-card,
+    .shuffle-block #radio-4:checked + .shuffle-card{
+      opacity: 1;
+      filter: none;
+    }
+  }
+  
+  /* ---------- Responsiveness ---------- */
+  @media (max-width: 520px){
+    .shuffle-block .shuffle-card{
+      width: min(420px, 94vw);
+    }
+  }
+  
+  /* If you ever embed this over a dark dynamic canvas, keep cards clickable */
+  .shuffle-block{
+    position: relative;
+    z-index: 1;
+    pointer-events: auto;
+  }
+  
+
+
+  /* reserve vertical space for the absolute-positioned cards */
+.shuffle-block .shuffle-cards{
+    min-height: clamp(380px, 52vh, 520px);
+  }
+  
+  /* nudge the whole block down from the section above */
+  .shuffle-block{
+    margin-block-start: clamp(24px, 6vh, 64px); /* adjust to taste */
+  }
+  
+
+
+  .shuffle-block .section-title {
+    color: whitesmoke;
+    text-align: center;
+    font-size: clamp(1.5rem, 2vw, 2rem);
+    margin-bottom: 4rem;
+    font-weight: 700;
+  }
+
+
+
+  /* Reusable glow for headings */
+/* Glow text style */
+.Hallo {
+    color: #eaf4ff;
+    font-weight: 800;
+    letter-spacing: .5px;
+    text-align: center;
+    position: relative; /* needed for ::after positioning */
+    text-shadow:
+      0 1px 0 rgba(255,255,255,.2),
+      0 0 10px rgba(46,196,255,.45),
+      0 0 24px rgba(46,196,255,.35),
+      0 0 48px rgba(46,196,255,.2);
+  }
+  
+  /* Halo underline effect */
+  .Hallo::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -10px;
+    width: 60%;
+    height: 8px;
+    background: radial-gradient(
+      50% 8px at 50% 50%,
+      rgba(46,196,255,.5),
+      transparent 70%
+    );
+    filter: blur(6px);
+    pointer-events: none;
+    z-index: -1; /* places it behind the text */
+  }
+  
+
+
+ 
+  
+  
+  

@@ -1,0 +1,284 @@
+@import url("https://fonts.googleapis.com/css2?family=Righteous&display=swap");
+
+body .container {
+
+  max-width: 100vw;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 35px;
+  /* margin: 0 auto; */
+
+    margin-inline: auto;                              /* keep centered */
+  margin-block: clamp(48px, 8vh, 96px);             /* space above & below */
+  border-block: 1px solid rgba(255,255,255,.08);    /* top & bottom borders only */
+  padding-block: clamp(32px, 6vh, 56px);            /* breathing room inside */
+  background: transparent;
+  box-sizing: border-box;
+  padding: 40px 0;
+}
+body .container .card {
+  position: relative;
+  width: 300px;
+  height: 400px;
+  margin: 0 auto;
+  background: #1f2937;;
+  border-radius: 15px;
+  box-shadow: 0 15px 60px rgba(0, 0, 0, 0.5);
+}
+body .container .card .face {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+body .container .card .face.face1 {
+  box-sizing: border-box;
+  padding: 20px;
+}
+body .container .card .face.face1 h2 {
+  margin: 0;
+  padding: 0;
+}
+body .container .card .face.face1 .java {
+
+  background-color: whitesmoke;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+body .container .card .face.face1 .python {
+  background-color: white;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+body .container .card .face.face1 .cSharp {
+  background-color: white;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+body .container .card .face.face2 {
+  transition: 0.5s;
+}
+body .container .card .face.face2 h2 {
+  margin: 0;
+  padding: 0;
+  font-weight:800;
+  color: #fff;
+  transition: 0.5s;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+body .container .card:hover .face.face2 {
+  height: 60px;
+}
+body .container .card:hover .face.face2 h2 {
+  font-weight: 600;
+}
+/* body .container .card:nth-child(1) .face.face2 {
+  background-image: linear-gradient(40deg, #fffc00 0%, #fc00ff 45%, #00fffc 100%);
+  border-radius: 15px;
+}
+body .container .card:nth-child(2) .face.face2 {
+  background-image: linear-gradient(40deg, #fc00ff 0%, #00fffc 45%, #fffc00 100%);
+  border-radius: 15px;
+}
+body .container .card:nth-child(3) .face.face2 {
+  background-image: linear-gradient(40deg, #00fffc 0%, #fc00ff 45%, #fffc00 100%);
+  border-radius: 15px;
+}
+
+body .container .card:nth-child(4) .face.face2{
+  background-image: linear-gradient(40deg, #fffc00 0%, #fc00ff 45%, #00fffc 100%);
+  border-radius: 15px;
+} */
+
+body .container .card .face.face2{
+  background-image: linear-gradient(40deg, #121c2d 0%, #2a2f6c 55%, #1a6fb8 100%);
+  /* the text of the outside part of the card is central because of the below code  */
+  text-align: center;
+  border-radius: 15px;
+}
+
+/* --- Wavy overlay like skill cards (no HTML changes) --- */
+body .container .card { overflow: hidden; }                 /* keep waves inside corners */
+body .container .card .face.face2 { position: absolute; overflow: hidden; }
+
+body .container .card .face.face2::before,
+body .container .card .face.face2::after{
+  content: "";
+  position: absolute;
+  width: 540px;
+  height: 700px;
+  left: 0;
+  top: 0;
+  margin-left: -50%;
+  margin-top: -70%;
+  border-radius: 40%;
+  pointer-events: none;
+  z-index: 0;                                               /* behind the number */
+  background: linear-gradient(744deg,#af40ff,#5b42f3 60%,#00ddeb);
+  opacity: 0.55;
+  animation: waveSpin 24s linear infinite;                  /* speed like skill cards (faster) */
+  mix-blend-mode: screen;                                   /* luminous look */
+}
+
+/* second layer for depth (offset + different speed) */
+body .container .card .face.face2::after{
+  top: 210px;
+  opacity: 0.35;
+  animation-duration: 18s;
+  animation-direction: reverse;
+}
+
+/* make sure the face2 label stays above the waves */
+body .container .card .face.face2 h2{
+  position: relative;
+  z-index: 1;
+}
+
+/* wave animation */
+@keyframes waveSpin {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+
+#experience {
+    /* optional: section-level spacing if you want it here instead of home.css */
+    background: transparent;
+  }
+  
+  #experience .container{
+    max-width: 100vw;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-gap: 35px;
+    margin-inline: auto;
+    margin-block: clamp(48px, 8vh, 96px);
+    border-block: 1px solid rgba(255,255,255,.08);
+    padding-block: clamp(32px, 6vh, 56px);
+    background: transparent;
+    box-sizing: border-box;
+    padding: 40px 0;
+  }
+
+
+  /* --- subtle neon glow for the whole card --- */
+body .container .card{
+    /* keep your existing shadow, add a faint outer ring + inner hairline */
+    box-shadow:
+      0 15px 60px rgba(0,0,0,.5),
+      0 0 22px rgba(46,196,255,.18),
+      0 0 0 1px rgba(255,255,255,.06) inset;
+    position: relative; /* for the pseudo-elements below */
+    z-index: 0;
+  }
+  
+  /* soft halo that hugs the card edges */
+  body .container .card::before{
+    content:"";
+    position:absolute;
+    inset:-2px;                 /* tiny overspill so it feathers out */
+    border-radius: inherit;
+    pointer-events:none;
+    background:
+      radial-gradient(120% 60% at 50% 0%,
+        rgba(94,234,212,.22), transparent 60%),
+      radial-gradient(60% 50% at 50% 100%,
+        rgba(46,196,255,.20), transparent 70%);
+    filter: blur(10px);
+    opacity: .9;
+    z-index: -1;                /* sit behind the card */
+  }
+  
+  /* under-glow on the “table” */
+   body .container .card::after{
+    content:"";
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:-14px;
+    width:60%;
+    height:16px;
+    pointer-events:none;
+    background: radial-gradient(50% 8px at 50% 50%,
+                rgba(46,196,255,.35), transparent 70%);
+    filter: blur(8px);
+    z-index:-1;
+  } 
+  
+  /* make the title on the front face glow a touch more */
+  body .container .card .face.face2 h2{
+    text-shadow:
+      0 1px 0 rgba(255,255,255,.25),
+      0 0 12px rgba(46,196,255,.45),
+      0 0 30px rgba(46,196,255,.30);
+  }
+  
+  /* stronger glow on hover */
+  body .container .card:hover{
+    box-shadow:
+      0 22px 70px rgba(0,0,0,.55),
+      0 0 28px rgba(46,196,255,.28),
+      0 0 0 1px rgba(255,255,255,.08) inset;
+  }
+  body .container .card:hover::before{
+    filter: blur(12px);
+    opacity: 1;
+  }
+  
+  
+  .experience {
+    text-align: center !important;
+    margin-top: 150px;
+    font-weight:800;
+    color: white;
+    position: relative;
+    z-index: 2;                 /* keep above any canvas/overlays */
+    background: transparent;
+    padding-inline: clamp(16px,5vw,64px);
+  }
+
+
+  /* Glow like the other titles */
+#experience .experience{
+    letter-spacing: .5px;
+    font-size: clamp(22px, 3vw, 36px); 
+    text-shadow:
+      0 1px 0 rgba(255,255,255,.2),
+      0 0 10px rgba(46,196,255,.45),
+      0 0 24px rgba(46,196,255,.35),
+      0 0 48px rgba(46,196,255,.2);
+  }
+  
+  /* subtle halo line under the text */
+  #experience .experience::after{
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -10px;
+    width: 60%;
+    height: 8px;
+    background: radial-gradient(50% 8px at 50% 50%, rgba(46,196,255,.5), transparent 70%);
+    filter: blur(6px);
+    pointer-events: none;
+    z-index: -1;
+  }
+  
+
+
+  /* Bigger text on the inside face (date + description) */
+#experience .card .face.face1 h2{
+  font-size: clamp(22px, 2.3vw, 28px);
+}
+
+#experience .card .face.face1 p{
+  font-size: clamp(14px, 1.5vw, 18px);
+  line-height: 1.6;            /* nicer spacing while we're here */
+}
+
